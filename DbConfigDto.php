@@ -7,6 +7,6 @@ class DbConfigDto
     public string $dbType;
     public string $dbHost;
     public string $dbName;
-    public string $user;
-    public string $password;
+    public ?string $user = null;
+    public ?string $password = null;
 }

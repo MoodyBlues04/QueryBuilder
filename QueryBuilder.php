@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class QueryBuilder
 {
     private db $db;
@@ -9,7 +11,8 @@ class QueryBuilder
         $this->db = db::getInstance($dbConfigDto);
     }
 
-    public function select(string $params)
+    public function select(string|array $params): self
     {
+        return $this;
     }
 }

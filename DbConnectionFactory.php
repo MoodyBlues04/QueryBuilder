@@ -4,11 +4,24 @@ declare(strict_types=1);
 
 class DbConnectionFactory
 {
-    private const DB_TYPES = [];
+    const DB_TYPE_MYSQL = 'mysql';
 
-    public static function create(DbConfigDto $configDto)
+    /** @var string[] */
+    private const DB_TYPES = [
+        self::DB_TYPE_MYSQL
+    ];
+
+    /**
+     * @throws PDOException
+     */
+    public static function create(DbConfigDto $configDto): PDO
     {
         self::checkDbType($configDto->dbType);
+        return new PDO(
+            "{$configDto->dbType}:host={$configDto->dbHost};dbname={$configDto->dbName}",
+            $configDto->user,
+            $configDto->password
+        );
     }
 
     /**

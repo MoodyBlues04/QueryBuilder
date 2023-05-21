@@ -14,8 +14,11 @@ class db
         return self::$instance;
     }
 
-    private $dbConnection;
+    private PDO $dbConnection;
 
+    /**
+     * @throws PDOException
+     */
     private function __construct(DbConfigDto $configDto)
     {
         $this->changeDbConfig($configDto);
@@ -37,16 +40,19 @@ class db
         throw new \Exception('Deserializing is not allowed.');
     }
 
+    /**
+     * @throws PDOException
+     */
     public function changeDbConfig(DbConfigDto $configDto): void
     {
         $this->dbConnection = DbConnectionFactory::create($configDto);
     }
 
-    public function query(string $query): mixed
+    public function query(string $query): ?array
     {
         $result = $this->dbConnection->query($query);
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
+        if ($result->rowCount() > 0) {
+            $row = $result->fetchAll(PDO::FETCH_DEFAULT);
             return $row;
         }
 
