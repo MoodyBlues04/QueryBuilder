@@ -2,14 +2,17 @@
 
 declare(strict_types=1);
 
-namespace src\QueryBuilder;
+namespace src\QueryBuilder\params;
 
 use src\QueryBuilder\helpers\QueryConditionHelper;
 
-class QueryDeleteParams
+class QueryUpdateParams
 {
-    private ?string $from = null;
-
+    private ?string $table = null;
+    /**
+     * @var array<string,mixed>
+     */
+    private ?array $columnsValues = null;
     /**
      * Where statement
      * 
@@ -21,9 +24,14 @@ class QueryDeleteParams
      */
     private ?array $where = null;
 
-    public function setFrom(string $from): void
+    public function setTable(string $table): void
     {
-        $this->from = $from;
+        $this->table = $table;
+    }
+
+    public function setColumnsValues(array $columnsValues): void
+    {
+        $this->columnsValues = $columnsValues;
     }
 
     public function setWhere(array $where): void
@@ -38,8 +46,9 @@ class QueryDeleteParams
     {
         $this->validateRequest();
 
-        $request = "DELETE\n";
-        $request .= $this->getFromAsString() . "\n";
+        $request = "UPDATE {$this->table}\n";
+        $request .= $this->getSetAsString() . "\n";
+
         if (!is_null($this->where)) {
             $request .= $this->getWhereAsString() . "\n";
         }
@@ -52,14 +61,21 @@ class QueryDeleteParams
      */
     private function validateRequest(): void
     {
-        if (is_null($this->from)) {
-            throw new \LogicException('SQL DELETE request must include FROM statement');
+        if (is_null($this->table)) {
+            throw new \LogicException('SQL UPDATE request must include table name');
+        }
+        if (is_null($this->columnsValues)) {
+            throw new \LogicException('SQL UPDATE request must include SET statement');
         }
     }
 
-    private function getFromAsString(): string
+    public function getSetAsString(): string
     {
-        return "FROM {$this->from}";
+        $statement = 'SET ';
+        foreach ($this->columnsValues as $column => $value) {
+            $statement .= "{$column} = '{$value}', ";
+        }
+        return rtrim($statement, ', ');
     }
 
     /**

@@ -2,26 +2,33 @@
 
 declare(strict_types=1);
 
-namespace src\QueryBuilder;
+namespace src\QueryBuilder\builders;
 
 use src\db\db;
 use src\db\DbConfigDto;
+use src\QueryBuilder\params\QueryUpdateParams;
 
-class QueryDeleteBuilder
+class QueryUpdateBuilder
 {
     private db $db;
 
-    private QueryDeleteParams $params;
+    private QueryUpdateParams $params;
 
     public function __construct(DbConfigDto $dbConfigDto)
     {
         $this->db = db::getInstance($dbConfigDto);
-        $this->params = new QueryDeleteParams();
+        $this->params = new QueryUpdateParams();
     }
 
-    public function from(string $from): self
+    public function update(string $table): self
     {
-        $this->params->setFrom($from);
+        $this->params->setTable($table);
+        return $this;
+    }
+
+    public function set(array $columnValues): self
+    {
+        $this->params->setColumnsValues($columnValues);
         return $this;
     }
 
@@ -34,7 +41,6 @@ class QueryDeleteBuilder
     public function execute(): bool
     {
         $request = $this->params->getRequest();
-        var_dump($request);
         return $this->db->execute($request);
     }
 }

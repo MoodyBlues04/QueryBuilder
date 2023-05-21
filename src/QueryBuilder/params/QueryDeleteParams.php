@@ -2,17 +2,14 @@
 
 declare(strict_types=1);
 
-namespace src\QueryBuilder;
+namespace src\QueryBuilder\params;
 
 use src\QueryBuilder\helpers\QueryConditionHelper;
 
-class QueryUpdateParams
+class QueryDeleteParams
 {
-    private ?string $table = null;
-    /**
-     * @var array<string,mixed>
-     */
-    private ?array $columnsValues = null;
+    private ?string $from = null;
+
     /**
      * Where statement
      * 
@@ -24,14 +21,9 @@ class QueryUpdateParams
      */
     private ?array $where = null;
 
-    public function setTable(string $table): void
+    public function setFrom(string $from): void
     {
-        $this->table = $table;
-    }
-
-    public function setColumnsValues(array $columnsValues): void
-    {
-        $this->columnsValues = $columnsValues;
+        $this->from = $from;
     }
 
     public function setWhere(array $where): void
@@ -46,9 +38,8 @@ class QueryUpdateParams
     {
         $this->validateRequest();
 
-        $request = "UPDATE {$this->table}\n";
-        $request .= $this->getSetAsString() . "\n";
-
+        $request = "DELETE\n";
+        $request .= $this->getFromAsString() . "\n";
         if (!is_null($this->where)) {
             $request .= $this->getWhereAsString() . "\n";
         }
@@ -61,21 +52,14 @@ class QueryUpdateParams
      */
     private function validateRequest(): void
     {
-        if (is_null($this->table)) {
-            throw new \LogicException('SQL UPDATE request must include table name');
-        }
-        if (is_null($this->columnsValues)) {
-            throw new \LogicException('SQL UPDATE request must include SET statement');
+        if (is_null($this->from)) {
+            throw new \LogicException('SQL DELETE request must include FROM statement');
         }
     }
 
-    public function getSetAsString(): string
+    private function getFromAsString(): string
     {
-        $statement = 'SET ';
-        foreach ($this->columnsValues as $column => $value) {
-            $statement .= "{$column} = '{$value}', ";
-        }
-        return rtrim($statement, ', ');
+        return "FROM {$this->from}";
     }
 
     /**

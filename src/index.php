@@ -16,11 +16,15 @@ $configDto->user = 'root';
 
 $queryBuilder = new QueryBuilder($configDto);
 
-$queryBuilder->delete()->from('logger')->where(['message' => 'test1'])->execute();
+$queryBuilder->insert()
+    ->into('logger')
+    ->columns(['message'])
+    ->values(['test'])
+    ->execute();
 
 $res = $queryBuilder->select('*')
     ->from('logger')
-    ->where(['message' => 'test1'])
+    ->where(['message' => 'test'])
     // ->groupBy('message')
     // ->having(['count', 'id', '>', 1])
     // ->orderBy(['id' => QuerySelectParams::SORT_DESC])

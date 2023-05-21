@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace src\QueryBuilder;
+namespace src\QueryBuilder\builders;
 
 use src\db\db;
 use src\db\DbConfigDto;
+use src\QueryBuilder\params\QueryInsertParams;
 
 class QueryInsertBuilder
 {
@@ -40,7 +41,6 @@ class QueryInsertBuilder
     public function execute(): bool
     {
         $request = $this->params->getRequest();
-        var_dump($request);
         return $this->db->execute($request);
     }
 }

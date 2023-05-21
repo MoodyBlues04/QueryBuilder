@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace src\QueryBuilder;
+namespace src\QueryBuilder\builders;
 
+use src\QueryBuilder\params\QuerySelectParams;
 use src\db\db;
 use src\db\DbConfigDto;
 
@@ -95,7 +96,6 @@ class QuerySelectBuilder
     public function all(): ?array
     {
         $request = $this->params->getRequest();
-        var_dump($request);
         return $this->db->query($request);
     }
 

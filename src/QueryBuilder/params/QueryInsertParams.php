@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace src\QueryBuilder;
+namespace src\QueryBuilder\params;
 
 class QueryInsertParams
 {
