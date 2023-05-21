@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace src\db;
+
 class db
 {
     private static ?self $instance = null;
@@ -14,7 +16,7 @@ class db
         return self::$instance;
     }
 
-    private PDO $dbConnection;
+    private \PDO $dbConnection;
 
     /**
      * @throws PDOException
@@ -52,10 +54,16 @@ class db
     {
         $result = $this->dbConnection->query($query);
         if ($result->rowCount() > 0) {
-            $row = $result->fetchAll(PDO::FETCH_DEFAULT);
+            $row = $result->fetchAll(\PDO::FETCH_ASSOC);
             return $row;
         }
 
         return null;
+    }
+
+    public function execute(string $command): bool
+    {
+        $stm = $this->dbConnection->prepare($command);
+        return $stm->execute();
     }
 }

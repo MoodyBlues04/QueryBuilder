@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace src\db;
+
 class DbConnectionFactory
 {
     const DB_TYPE_MYSQL = 'mysql';
@@ -12,12 +14,12 @@ class DbConnectionFactory
     ];
 
     /**
-     * @throws PDOException
+     * @throws \PDOException
      */
-    public static function create(DbConfigDto $configDto): PDO
+    public static function create(DbConfigDto $configDto): \PDO
     {
         self::checkDbType($configDto->dbType);
-        return new PDO(
+        return new \PDO(
             "{$configDto->dbType}:host={$configDto->dbHost};dbname={$configDto->dbName}",
             $configDto->user,
             $configDto->password
