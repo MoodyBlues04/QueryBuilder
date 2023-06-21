@@ -48,10 +48,12 @@ class CommandsQuerySelectBuilder extends BaseCommandsQueryBuilder
      * Adds where statement
      * 
      * Supported param types:
+     * ```
      * ['key' => 'value']
      * ['>', 'key', 'value']
      * ['between', 'key', 'value_from', 'value_to']
      * ['like', 'value', 'regexp']
+     * ```
      */
     public function where(array $where): self
     {
@@ -71,10 +73,12 @@ class CommandsQuerySelectBuilder extends BaseCommandsQueryBuilder
      * Adds having statement
      * 
      * Supports types:
+     * ```
      * ['func', 'key', '>', 'value']
      * ['func', 'key', 'between', 'value_from', 'value_to]
+     * ```
      * 
-     * func can be: sum, max, min, count
+     * supported funcs: ```sum, max, min, count```
      */
     public function having(array|string $having): self
     {
@@ -85,11 +89,13 @@ class CommandsQuerySelectBuilder extends BaseCommandsQueryBuilder
     }
 
     /**
-     * Adds order by statement
+     * Adds order by statement.
+     * Default sort asc
      * 
      * Supported types:
+     * ```
      * [key => SORT_DESC|SORT_ASC]
-     * 'key' default sort asc
+     * ```
      */
     public function orderBy(array|string $orderBy): self
     {
