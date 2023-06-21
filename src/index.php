@@ -17,12 +17,6 @@ $configDto->user = 'root';
 
 $queryBuilder = new CommandsQuerySelectBuilder($configDto);
 
-// $queryBuilder->insert()
-//     ->into('logger')
-//     ->columns(['message'])
-//     ->values(['test'])
-//     ->execute();
-
 $res = $queryBuilder->select('*')
     ->from('logger')
     ->orderBy(['message' => OrderByCommand::SORT_ASC])
@@ -33,3 +27,10 @@ $res = $queryBuilder->select('*')
     // ->limit(2)
     ->all();
 var_dump($res);
+
+/**
+ * TODO andWhere, orWhere
+ * TODO all builders on commands
+ * TODO base commands for typical commands
+ * TODO ConditionCommand refactor
+ */
