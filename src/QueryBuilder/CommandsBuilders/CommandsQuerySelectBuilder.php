@@ -12,6 +12,7 @@ use src\QueryBuilder\SqlCommands\HavingCommand;
 use src\QueryBuilder\SqlCommands\LimitCommand;
 use src\QueryBuilder\SqlCommands\OrderByCommand;
 use src\QueryBuilder\SqlCommands\SelectCommand;
+use src\QueryBuilder\SqlCommands\SqlStatements;
 use src\QueryBuilder\SqlCommands\WhereCommand;
 
 class CommandsQuerySelectBuilder extends BaseCommandsQueryBuilder
@@ -28,6 +29,7 @@ class CommandsQuerySelectBuilder extends BaseCommandsQueryBuilder
      */
     public function select(string|array $select): self
     {
+        $this->checkIsFirstStatement();
         $this->addCommand(new SelectCommand($select));
         return $this;
     }
@@ -37,6 +39,7 @@ class CommandsQuerySelectBuilder extends BaseCommandsQueryBuilder
      */
     public function from(string $from): self
     {
+        $this->checkIsLastStatement(SqlStatements::SELECT);
         $this->addCommand(new FromCommand($from));
         return $this;
     }
@@ -52,6 +55,8 @@ class CommandsQuerySelectBuilder extends BaseCommandsQueryBuilder
      */
     public function where(array $where): self
     {
+        $this->checkIsLastStatement(SqlStatements::FROM);
+
         $this->addCommand(new WhereCommand($where));
         return $this;
     }
@@ -73,6 +78,8 @@ class CommandsQuerySelectBuilder extends BaseCommandsQueryBuilder
      */
     public function having(array|string $having): self
     {
+        $this->checkIsLastStatement(SqlStatements::GROUP_BY);
+
         $this->addCommand(new HavingCommand($having));
         return $this;
     }

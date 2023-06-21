@@ -7,6 +7,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use src\db\DbConfigDto;
 use src\db\DbConnectionFactory;
 use src\QueryBuilder\CommandsBuilders\CommandsQuerySelectBuilder;
+use src\QueryBuilder\SqlCommands\OrderByCommand;
 
 $configDto = new DbConfigDto();
 $configDto->dbType = DbConnectionFactory::DB_TYPE_MYSQL;
@@ -24,6 +25,7 @@ $queryBuilder = new CommandsQuerySelectBuilder($configDto);
 
 $res = $queryBuilder->select('*')
     ->from('logger')
+    ->orderBy(['message' => OrderByCommand::SORT_ASC])
     ->where(['message' => 'confirm error'])
     // ->groupBy('message')
     // ->having(['count', 'id', '>', 1])
