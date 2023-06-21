@@ -41,7 +41,7 @@ class QuerySelectParams
      * OrderBy statement
      * 
      * Supported types:
-     * [key => SORT_DESC|SORT_ASC]
+     * ```[key => SORT_DESC|SORT_ASC]```
      */
     private ?array $orderBy = null;
     private ?int $limit = null;

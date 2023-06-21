@@ -25,8 +25,7 @@ class QueryBuilder
     public function select(string|array $select): QuerySelectBuilder
     {
         $selectQueryBuilder = new QuerySelectBuilder($this->dbConfigDto);
-        $selectQueryBuilder->select($select);
-        return $selectQueryBuilder;
+        return $selectQueryBuilder->select($select);
     }
 
     public function insert(): QueryInsertBuilder
