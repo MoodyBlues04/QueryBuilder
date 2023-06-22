@@ -7,6 +7,7 @@ namespace src\QueryBuilder\Builders;
 use src\db\db;
 use src\db\DbConfigDto;
 use src\QueryBuilder\SqlCommands\ColumnsCommand;
+use src\QueryBuilder\SqlCommands\InsertCommand;
 use src\QueryBuilder\SqlCommands\SetTableCommand;
 use src\QueryBuilder\SqlCommands\SqlStatements;
 use src\QueryBuilder\SqlCommands\ValuesCommand;
@@ -18,6 +19,12 @@ class QueryInsertBuilder extends BaseCommandsQueryBuilder
     public function __construct(DbConfigDto $dbConfigDto)
     {
         $this->db = db::getInstance($dbConfigDto);
+    }
+
+    public function insert(): self
+    {
+        $this->addCommand(new InsertCommand());
+        return $this;
     }
 
     public function into(string $into): self
@@ -40,7 +47,7 @@ class QueryInsertBuilder extends BaseCommandsQueryBuilder
 
     public function execute(): bool
     {
-        $request = 'INSERT ' . $this->getSqlRequest();
+        $request = $this->getSqlRequest();
         var_dump($request);
         return $this->db->execute($request);
     }

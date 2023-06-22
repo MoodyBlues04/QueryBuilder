@@ -24,9 +24,6 @@ class QuerySelectBuilder extends BaseCommandsQueryBuilder
         $this->db = db::getInstance($dbConfigDto);
     }
 
-    /**
-     * @throws \LogicException
-     */
     public function select(string|array $select): self
     {
         $this->checkIsFirstStatement();
@@ -34,9 +31,6 @@ class QuerySelectBuilder extends BaseCommandsQueryBuilder
         return $this;
     }
 
-    /**
-     * @throws \LogicException
-     */
     public function from(string $from): self
     {
         $this->checkIsLastStatement(SqlStatements::SELECT);
@@ -44,17 +38,6 @@ class QuerySelectBuilder extends BaseCommandsQueryBuilder
         return $this;
     }
 
-    /**
-     * Adds where statement
-     * 
-     * Supported param types:
-     * ```
-     * ['key' => 'value']
-     * ['>', 'key', 'value']
-     * ['between', 'key', 'value_from', 'value_to']
-     * ['like', 'value', 'regexp']
-     * ```
-     */
     public function where(array $where): self
     {
         $this->checkIsLastStatement(SqlStatements::FROM);
@@ -69,17 +52,6 @@ class QuerySelectBuilder extends BaseCommandsQueryBuilder
         return $this;
     }
 
-    /**
-     * Adds having statement
-     * 
-     * Supports types:
-     * ```
-     * ['func', 'key', '>', 'value']
-     * ['func', 'key', 'between', 'value_from', 'value_to]
-     * ```
-     * 
-     * supported funcs: ```sum, max, min, count```
-     */
     public function having(array|string $having): self
     {
         $this->checkIsLastStatement(SqlStatements::GROUP_BY);
@@ -88,15 +60,6 @@ class QuerySelectBuilder extends BaseCommandsQueryBuilder
         return $this;
     }
 
-    /**
-     * Adds order by statement.
-     * Default sort asc
-     * 
-     * Supported types:
-     * ```
-     * [key => SORT_DESC|SORT_ASC]
-     * ```
-     */
     public function orderBy(array|string $orderBy): self
     {
         $this->addCommand(new OrderByCommand($orderBy));

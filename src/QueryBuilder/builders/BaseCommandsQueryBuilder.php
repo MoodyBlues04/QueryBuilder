@@ -57,7 +57,6 @@ abstract class BaseCommandsQueryBuilder
         foreach ($this->commands as $command) {
             $request .= $command->getSqlRequest() . "\n";
         }
-
         return $request;
     }
 }

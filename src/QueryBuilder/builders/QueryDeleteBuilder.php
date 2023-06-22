@@ -6,6 +6,7 @@ namespace src\QueryBuilder\Builders;
 
 use src\db\db;
 use src\db\DbConfigDto;
+use src\QueryBuilder\SqlCommands\DeleteCommand;
 use src\QueryBuilder\SqlCommands\SetTableCommand;
 use src\QueryBuilder\SqlCommands\SqlStatements;
 use src\QueryBuilder\SqlCommands\WhereCommand;
@@ -17,6 +18,12 @@ class QueryDeleteBuilder extends BaseCommandsQueryBuilder
     public function __construct(DbConfigDto $dbConfigDto)
     {
         $this->db = db::getInstance($dbConfigDto);
+    }
+
+    public function delete(): self
+    {
+        $this->addCommand(new DeleteCommand());
+        return $this;
     }
 
     public function from(string $from): self
@@ -33,7 +40,7 @@ class QueryDeleteBuilder extends BaseCommandsQueryBuilder
 
     public function execute(): bool
     {
-        $request = 'DELETE ' . $this->getSqlRequest();
+        $request = $this->getSqlRequest();
         var_dump($request);
         return $this->db->execute($request);
     }

@@ -24,12 +24,12 @@ class ConditionCommand
     public function getWhere(): string
     {
         // means key => val request
-        if (!isset($this->condition[0]) && !is_null($this->condition)) {
+        if (!isset($this->condition[0]) && !empty($this->condition)) {
             $key = key($this->condition);
             return "{$key} = '{$this->condition[$key]}'";
         }
 
-        return $this->getConditionAsString($this->condition);
+        return $this->parseBaseCondition($this->condition);
     }
 
     /**
@@ -48,10 +48,10 @@ class ConditionCommand
         $condition[0] = $condition[1];
         $condition[1] = "{$this->condition[0]}({$this->condition[1]})";
 
-        return $this->getConditionAsString($condition);
+        return $this->parseBaseCondition($condition);
     }
 
-    private function getConditionAsString(array $condition): string
+    private function parseBaseCondition(array $condition): string
     {
         $operator = $condition[0];
         $this->checkConditionOperator($operator);
