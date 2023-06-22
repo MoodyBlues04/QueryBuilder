@@ -16,7 +16,7 @@ $configDto->dbHost = '127.0.0.1';
 $configDto->dbName = 'todo';
 $configDto->user = 'root';
 
-// $queryBuilder = new QueryBuilder($configDto);
+$queryBuilder = new QueryBuilder($configDto);
 
 // $queryBuilder->insert()->into('logger')->columns(['id', 'message'])->values([21, 'test'])->execute();
 
@@ -24,29 +24,24 @@ $configDto->user = 'root';
 
 // $queryBuilder->delete()->from('logger')->where(['id' => 21])->execute();
 
-// $res = $queryBuilder->select('*')
-//     ->from('logger')
-//     ->where(['message' => 'test'])
-//     // ->groupBy('message')
-//     // ->having(['count', 'id', '>', 1])
-//     ->orderBy(['id' => OrderByCommand::SORT_DESC])
-//     // ->limit(2)
-//     ->all();
-// var_dump($res);
-
-// $request = 'SELECT * FROM logger WHERE NOT (id = 22) ORDER BY id DESC LIMIT 3';
-// $db = db::getInstance($configDto);
-// var_dump($db->query($request));
+$res = $queryBuilder->select('*')
+    ->from('logger')
+    ->where(['message' => 'test'])
+    ->andWhere(['>', 'id', 20])
+    // ->groupBy('message')
+    // ->having(['count', 'id', '>', 1])
+    ->orderBy(['id' => OrderByCommand::SORT_DESC])
+    // ->limit(2)
+    ->all();
+var_dump($res);
 
 
-$conditionTest = new ConditionTest(['id' => 1]);
-$conditionTest->addCondition('or', ['created_at' => '2022-06-06']);
-var_dump($conditionTest->getConditionRequest());
 
 /**
  * final all TODO-s in project
  * 
  * TODO condition operators validation
+ * TODO last commands validation
  * TODO remove request dumps
  * TODO may be composition in QueryBuilder
  */

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace src\QueryBuilder\Traits;
+namespace src\QueryBuilder\SqlCommands\Condition;
 
-trait Condition
+class Condition
 {
-    protected array $condition;
+    private array $condition;
 
     public function __construct(array $condition)
     {
@@ -31,13 +31,13 @@ trait Condition
         if ($this->isKeyValueCondition($condition)) {
             return $this->parseKeyValueCondition($condition);
         }
-        if ($this->isBaseOperator($condition[0])) {
+        if (Operators::isBaseOperator($condition[0])) {
             return $this->parseBaseCondition($condition);
         }
-        if ($this->isHavingFunction($condition[0])) {
+        if (Operators::isHavingFunction($condition[0])) {
             return $this->parseHavingCondition($condition);
         }
-        if ($this->isBoolOperator($condition[0])) {
+        if (Operators::isBoolOperator($condition[0])) {
             return $this->parseComplicatedCondition($condition);
         }
 
@@ -110,21 +110,6 @@ trait Condition
             $query .= "{$key} = '{$value}' AND ";
         }
         return rtrim($query, ' AND ');
-    }
-
-    private function isHavingFunction(string $operator): bool
-    {
-        return in_array($operator, ['sum', 'avg', 'max', 'min', 'count']); // TODO to consts
-    }
-
-    private function isBoolOperator(string $operator): bool
-    {
-        return in_array($operator, ['and', 'or', 'not']);
-    }
-
-    private function isBaseOperator(string $operator): bool
-    {
-        return in_array($operator, ['=', '>', '>=', '<', '<=', 'like', 'between']);
     }
 
     private function isKeyValueCondition(array $condition): bool

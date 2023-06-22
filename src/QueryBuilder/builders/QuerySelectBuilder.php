@@ -6,6 +6,7 @@ namespace src\QueryBuilder\Builders;
 
 use src\db\db;
 use src\db\DbConfigDto;
+use src\QueryBuilder\SqlCommands\Condition\Operators;
 use src\QueryBuilder\SqlCommands\SetTableCommand;
 use src\QueryBuilder\SqlCommands\GroupByCommand;
 use src\QueryBuilder\SqlCommands\HavingCommand;
@@ -46,6 +47,26 @@ class QuerySelectBuilder extends BaseCommandsQueryBuilder
         return $this;
     }
 
+    public function andWhere(array $andWhere): self
+    {
+        $this->checkIsLastStatement(SqlStatements::WHERE);
+
+        /** @var WhereCommand */
+        $command = $this->getLastCommand();
+        $command->addCondition(Operators::AND, $andWhere);
+        return $this;
+    }
+
+    public function orWhere(array $orWhere): self
+    {
+        $this->checkIsLastStatement(SqlStatements::WHERE);
+
+        /** @var WhereCommand */
+        $command = $this->getLastCommand();
+        $command->addCondition(Operators::OR, $orWhere);
+        return $this;
+    }
+
     public function groupBy(array|string $groupBy): self
     {
         $this->addCommand(new GroupByCommand($groupBy));
@@ -57,6 +78,26 @@ class QuerySelectBuilder extends BaseCommandsQueryBuilder
         $this->checkIsLastStatement(SqlStatements::GROUP_BY);
 
         $this->addCommand(new HavingCommand($having));
+        return $this;
+    }
+
+    public function andHaving(array $andHaving): self
+    {
+        $this->checkIsLastStatement(SqlStatements::HAVING);
+
+        /** @var HavingCommand */
+        $command = $this->getLastCommand();
+        $command->addCondition(Operators::AND, $andHaving);
+        return $this;
+    }
+
+    public function orHaving(array $orHaving): self
+    {
+        $this->checkIsLastStatement(SqlStatements::HAVING);
+
+        /** @var HavingCommand */
+        $command = $this->getLastCommand();
+        $command->addCondition(Operators::OR, $orHaving);
         return $this;
     }
 

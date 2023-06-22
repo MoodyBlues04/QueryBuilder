@@ -6,6 +6,7 @@ namespace src\QueryBuilder\Builders;
 
 use src\db\db;
 use src\db\DbConfigDto;
+use src\QueryBuilder\SqlCommands\Condition\Operators;
 use src\QueryBuilder\SqlCommands\SetCommand;
 use src\QueryBuilder\SqlCommands\SetTableCommand;
 use src\QueryBuilder\SqlCommands\SqlStatements;
@@ -35,6 +36,26 @@ class QueryUpdateBuilder extends BaseCommandsQueryBuilder
     public function where(array $where): self
     {
         $this->addCommand(new WhereCommand($where));
+        return $this;
+    }
+
+    public function andWhere(array $andWhere): self
+    {
+        $this->checkIsLastStatement(SqlStatements::WHERE);
+
+        /** @var WhereCommand */
+        $command = $this->getLastCommand();
+        $command->addCondition(Operators::AND, $andWhere);
+        return $this;
+    }
+
+    public function orWhere(array $orWhere): self
+    {
+        $this->checkIsLastStatement(SqlStatements::WHERE);
+
+        /** @var WhereCommand */
+        $command = $this->getLastCommand();
+        $command->addCondition(Operators::OR, $orWhere);
         return $this;
     }
 
