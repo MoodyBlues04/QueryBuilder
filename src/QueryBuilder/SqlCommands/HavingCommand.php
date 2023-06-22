@@ -4,6 +4,17 @@ declare(strict_types=1);
 
 namespace src\QueryBuilder\SqlCommands;
 
+/**
+ * Adds having statement
+ * 
+ * Supports types:
+ * ```
+ * ['func', 'key', '>', 'value']
+ * ['func', 'key', 'between', 'value_from', 'value_to]
+ * ```
+ * 
+ * supported funcs: ```sum, max, min, count```
+ */
 class HavingCommand extends SqlCommand
 {
     private ConditionCommand $conditionCommand;

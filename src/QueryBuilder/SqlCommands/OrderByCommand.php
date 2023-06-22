@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 namespace src\QueryBuilder\SqlCommands;
 
+/**
+ * Adds order by statement.
+ * Default sort asc
+ * 
+ * Supported types:
+ * ```
+ * [key => SORT_DESC|SORT_ASC]
+ * ```
+ */
 class OrderByCommand extends SqlCommand
 {
     const SORT_ASC = 'ASC';
