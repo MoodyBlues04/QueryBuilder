@@ -41,6 +41,7 @@ class CommandsQueryUpdateBuilder extends BaseCommandsQueryBuilder
     public function execute(): bool
     {
         $request = $this->getSqlRequest();
+        var_dump($request);
         return $this->db->execute($request);
     }
 }

@@ -112,6 +112,7 @@ class CommandsQuerySelectBuilder extends BaseCommandsQueryBuilder
     public function all(): ?array
     {
         $request = $this->getSqlRequest();
+        var_dump($request);
         return $this->db->query($request);
     }
 

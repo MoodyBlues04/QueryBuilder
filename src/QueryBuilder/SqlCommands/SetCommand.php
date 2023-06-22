@@ -20,7 +20,7 @@ class SetCommand extends SqlCommand
 
     public function getSqlQuery(): string
     {
-        $query = 'SET ';
+        $query = '';
         foreach ($this->query as $column => $value) {
             $query .= "{$column} = '{$value}', ";
         }

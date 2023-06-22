@@ -17,14 +17,18 @@ $configDto->user = 'root';
 
 $queryBuilder = new CommandsQueryBuilder($configDto);
 
-$queryBuilder->insert()->into('logger')->columns(['id', 'message'])->values([21, 'test'])->execute();
+// $queryBuilder->insert()->into('logger')->columns(['id', 'message'])->values([22, 'test'])->execute();
+
+// $queryBuilder->update('logger')->set(['created_at' => '2023-06-22'])->where(['id' => 21])->execute();
+
+// $queryBuilder->delete()->from('logger')->where(['id' => 20])->execute();
 
 $res = $queryBuilder->select('*')
     ->from('logger')
     ->where(['message' => 'test'])
     // ->groupBy('message')
     // ->having(['count', 'id', '>', 1])
-    // ->orderBy(['id' => QuerySelectParams::SORT_DESC])
+    ->orderBy(['id' => OrderByCommand::SORT_DESC])
     // ->limit(2)
     ->all();
 var_dump($res);
@@ -38,4 +42,5 @@ var_dump($res);
  * TODO ConditionCommand refactor
  * TODO Insert as [key => val] array
  * TODO special objects commands Insert and Delete
+ * TODO remove request dumps
  */

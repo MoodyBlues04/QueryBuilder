@@ -33,7 +33,8 @@ class CommandsQueryDeleteBuilder extends BaseCommandsQueryBuilder
 
     public function execute(): bool
     {
-        $request = "DELETE\n" . $this->getSqlRequest(); // TODO refactor !!! (add DeleteCommand)
+        $request = 'DELETE ' . $this->getSqlRequest();
+        var_dump($request);
         return $this->db->execute($request);
     }
 }
