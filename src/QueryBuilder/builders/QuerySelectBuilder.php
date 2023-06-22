@@ -2,22 +2,26 @@
 
 declare(strict_types=1);
 
-namespace src\QueryBuilder\builders;
+namespace src\QueryBuilder\Builders;
 
-use src\QueryBuilder\params\QuerySelectParams;
 use src\db\db;
 use src\db\DbConfigDto;
+use src\QueryBuilder\SqlCommands\SetTableCommand;
+use src\QueryBuilder\SqlCommands\GroupByCommand;
+use src\QueryBuilder\SqlCommands\HavingCommand;
+use src\QueryBuilder\SqlCommands\LimitCommand;
+use src\QueryBuilder\SqlCommands\OrderByCommand;
+use src\QueryBuilder\SqlCommands\SelectCommand;
+use src\QueryBuilder\SqlCommands\SqlStatements;
+use src\QueryBuilder\SqlCommands\WhereCommand;
 
-class QuerySelectBuilder
+class QuerySelectBuilder extends BaseCommandsQueryBuilder
 {
     private db $db;
-
-    private QuerySelectParams $params;
 
     public function __construct(DbConfigDto $dbConfigDto)
     {
         $this->db = db::getInstance($dbConfigDto);
-        $this->params = new QuerySelectParams();
     }
 
     /**
@@ -25,7 +29,8 @@ class QuerySelectBuilder
      */
     public function select(string|array $select): self
     {
-        $this->params->setSelect($select);
+        $this->checkIsFirstStatement();
+        $this->addCommand(new SelectCommand($select));
         return $this;
     }
 
@@ -34,7 +39,8 @@ class QuerySelectBuilder
      */
     public function from(string $from): self
     {
-        $this->params->setFrom($from);
+        $this->checkIsLastStatement(SqlStatements::SELECT);
+        $this->addCommand(new SetTableCommand(SqlStatements::FROM, $from));
         return $this;
     }
 
@@ -42,20 +48,24 @@ class QuerySelectBuilder
      * Adds where statement
      * 
      * Supported param types:
+     * ```
      * ['key' => 'value']
      * ['>', 'key', 'value']
      * ['between', 'key', 'value_from', 'value_to']
      * ['like', 'value', 'regexp']
+     * ```
      */
     public function where(array $where): self
     {
-        $this->params->setWhere($where);
+        $this->checkIsLastStatement(SqlStatements::FROM);
+
+        $this->addCommand(new WhereCommand($where));
         return $this;
     }
 
     public function groupBy(array|string $groupBy): self
     {
-        $this->params->setGroupBy($groupBy);
+        $this->addCommand(new GroupByCommand($groupBy));
         return $this;
     }
 
@@ -63,39 +73,46 @@ class QuerySelectBuilder
      * Adds having statement
      * 
      * Supports types:
+     * ```
      * ['func', 'key', '>', 'value']
      * ['func', 'key', 'between', 'value_from', 'value_to]
+     * ```
      * 
-     * func can be: sum, max, min, count
+     * supported funcs: ```sum, max, min, count```
      */
     public function having(array|string $having): self
     {
-        $this->params->setHaving($having);
+        $this->checkIsLastStatement(SqlStatements::GROUP_BY);
+
+        $this->addCommand(new HavingCommand($having));
         return $this;
     }
 
     /**
-     * Adds order by statement
+     * Adds order by statement.
+     * Default sort asc
      * 
      * Supported types:
+     * ```
      * [key => SORT_DESC|SORT_ASC]
-     * 'key' default sort asc
+     * ```
      */
     public function orderBy(array|string $orderBy): self
     {
-        $this->params->setOrderBy($orderBy);
+        $this->addCommand(new OrderByCommand($orderBy));
         return $this;
     }
 
     public function limit(int $limit): self
     {
-        $this->params->setLimit($limit);
+        $this->addCommand(new LimitCommand($limit));
         return $this;
     }
 
     public function all(): ?array
     {
-        $request = $this->params->getRequest();
+        $request = $this->getSqlRequest();
+        var_dump($request);
         return $this->db->query($request);
     }
 

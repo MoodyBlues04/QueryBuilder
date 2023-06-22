@@ -6,7 +6,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use src\db\DbConfigDto;
 use src\db\DbConnectionFactory;
-use src\QueryBuilder\CommandsQueryBuilder;
+use src\QueryBuilder\QueryBuilder;
 use src\QueryBuilder\SqlCommands\OrderByCommand;
 
 $configDto = new DbConfigDto();
@@ -15,7 +15,7 @@ $configDto->dbHost = '127.0.0.1';
 $configDto->dbName = 'todo';
 $configDto->user = 'root';
 
-$queryBuilder = new CommandsQueryBuilder($configDto);
+$queryBuilder = new QueryBuilder($configDto);
 
 // $queryBuilder->insert()->into('logger')->columns(['id', 'message'])->values([22, 'test'])->execute();
 

@@ -2,39 +2,39 @@
 
 declare(strict_types=1);
 
-namespace src\QueryBuilder\builders;
+namespace src\QueryBuilder\Builders;
 
 use src\db\db;
 use src\db\DbConfigDto;
-use src\QueryBuilder\params\QueryDeleteParams;
+use src\QueryBuilder\SqlCommands\SetTableCommand;
+use src\QueryBuilder\SqlCommands\SqlStatements;
+use src\QueryBuilder\SqlCommands\WhereCommand;
 
-class QueryDeleteBuilder
+class QueryDeleteBuilder extends BaseCommandsQueryBuilder
 {
     private db $db;
-
-    private QueryDeleteParams $params;
 
     public function __construct(DbConfigDto $dbConfigDto)
     {
         $this->db = db::getInstance($dbConfigDto);
-        $this->params = new QueryDeleteParams();
     }
 
     public function from(string $from): self
     {
-        $this->params->setFrom($from);
+        $this->addCommand(new SetTableCommand(SqlStatements::FROM, $from));
         return $this;
     }
 
     public function where(array $where): self
     {
-        $this->params->setWhere($where);
+        $this->addCommand(new WhereCommand($where));
         return $this;
     }
 
     public function execute(): bool
     {
-        $request = $this->params->getRequest();
+        $request = 'DELETE ' . $this->getSqlRequest();
+        var_dump($request);
         return $this->db->execute($request);
     }
 }

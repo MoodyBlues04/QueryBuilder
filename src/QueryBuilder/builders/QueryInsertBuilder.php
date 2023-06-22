@@ -2,45 +2,46 @@
 
 declare(strict_types=1);
 
-namespace src\QueryBuilder\builders;
+namespace src\QueryBuilder\Builders;
 
 use src\db\db;
 use src\db\DbConfigDto;
-use src\QueryBuilder\params\QueryInsertParams;
+use src\QueryBuilder\SqlCommands\ColumnsCommand;
+use src\QueryBuilder\SqlCommands\SetTableCommand;
+use src\QueryBuilder\SqlCommands\SqlStatements;
+use src\QueryBuilder\SqlCommands\ValuesCommand;
 
-class QueryInsertBuilder
+class QueryInsertBuilder extends BaseCommandsQueryBuilder
 {
     private db $db;
-
-    private QueryInsertParams $params;
 
     public function __construct(DbConfigDto $dbConfigDto)
     {
         $this->db = db::getInstance($dbConfigDto);
-        $this->params = new QueryInsertParams();
     }
 
     public function into(string $into): self
     {
-        $this->params->setInto($into);
+        $this->addCommand(new SetTableCommand(SqlStatements::INTO, $into));
         return $this;
     }
 
     public function columns(array|string $columns): self
     {
-        $this->params->setColumns($columns);
+        $this->addCommand(new ColumnsCommand($columns));
         return $this;
     }
 
     public function values(array|string $values): self
     {
-        $this->params->setValues($values);
+        $this->addCommand(new ValuesCommand($values));
         return $this;
     }
 
     public function execute(): bool
     {
-        $request = $this->params->getRequest();
+        $request = 'INSERT ' . $this->getSqlRequest();
+        var_dump($request);
         return $this->db->execute($request);
     }
 }

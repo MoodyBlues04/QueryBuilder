@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace src\QueryBuilder;
 
-use src\QueryBuilder\builders\QuerySelectBuilder;
 use src\db\DbConfigDto;
-use src\QueryBuilder\builders\QueryDeleteBuilder;
-use src\QueryBuilder\builders\QueryInsertBuilder;
-use src\QueryBuilder\builders\QueryUpdateBuilder;
+use src\QueryBuilder\Builders\QueryDeleteBuilder;
+use src\QueryBuilder\Builders\QueryInsertBuilder;
+use src\QueryBuilder\Builders\QuerySelectBuilder;
+use src\QueryBuilder\Builders\QueryUpdateBuilder;
 
 class QueryBuilder
 {
@@ -19,9 +19,6 @@ class QueryBuilder
         $this->dbConfigDto = $dbConfigDto;
     }
 
-    /**
-     * @throws \LogicException
-     */
     public function select(string|array $select): QuerySelectBuilder
     {
         $selectQueryBuilder = new QuerySelectBuilder($this->dbConfigDto);

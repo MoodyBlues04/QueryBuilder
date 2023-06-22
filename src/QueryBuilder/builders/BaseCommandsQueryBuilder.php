@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace src\QueryBuilder\CommandsBuilders;
+namespace src\QueryBuilder\Builders;
 
 use src\QueryBuilder\SqlCommands\SqlCommand;
 

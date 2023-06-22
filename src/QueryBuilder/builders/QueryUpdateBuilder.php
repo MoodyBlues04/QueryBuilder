@@ -2,45 +2,46 @@
 
 declare(strict_types=1);
 
-namespace src\QueryBuilder\builders;
+namespace src\QueryBuilder\Builders;
 
 use src\db\db;
 use src\db\DbConfigDto;
-use src\QueryBuilder\params\QueryUpdateParams;
+use src\QueryBuilder\SqlCommands\SetCommand;
+use src\QueryBuilder\SqlCommands\SetTableCommand;
+use src\QueryBuilder\SqlCommands\SqlStatements;
+use src\QueryBuilder\SqlCommands\WhereCommand;
 
-class QueryUpdateBuilder
+class QueryUpdateBuilder extends BaseCommandsQueryBuilder
 {
     private db $db;
-
-    private QueryUpdateParams $params;
 
     public function __construct(DbConfigDto $dbConfigDto)
     {
         $this->db = db::getInstance($dbConfigDto);
-        $this->params = new QueryUpdateParams();
     }
 
     public function update(string $table): self
     {
-        $this->params->setTable($table);
+        $this->addCommand(new SetTableCommand(SqlStatements::UPDATE, $table));
         return $this;
     }
 
     public function set(array $columnValues): self
     {
-        $this->params->setColumnsValues($columnValues);
+        $this->addCommand(new SetCommand($columnValues));
         return $this;
     }
 
     public function where(array $where): self
     {
-        $this->params->setWhere($where);
+        $this->addCommand(new WhereCommand($where));
         return $this;
     }
 
     public function execute(): bool
     {
-        $request = $this->params->getRequest();
+        $request = $this->getSqlRequest();
+        var_dump($request);
         return $this->db->execute($request);
     }
 }
