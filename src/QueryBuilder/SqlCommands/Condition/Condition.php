@@ -72,6 +72,16 @@ class Condition
         return rtrim($result, " {$operator} ");
     }
 
+    /**
+     * Having condition should have that structure:
+     * ```
+     * ['function', 'key', 'operator', 'value']
+     * ```
+     * 
+     * @param array $havingCondition
+     * 
+     * @return string
+     */
     private function parseHavingCondition(array $havingCondition): string
     {
         $parsedCondition = array_slice($havingCondition, 1);

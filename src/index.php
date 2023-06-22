@@ -4,7 +4,6 @@ namespace src;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use src\db\db;
 use src\db\DbConfigDto;
 use src\db\DbConnectionFactory;
 use src\QueryBuilder\QueryBuilder;
@@ -44,4 +43,6 @@ var_dump($res);
  * TODO last commands validation
  * TODO remove request dumps
  * TODO may be composition in QueryBuilder
+ * 
+ * TODO mb only one Builder with all funcs??
  */
