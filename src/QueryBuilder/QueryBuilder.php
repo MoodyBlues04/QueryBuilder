@@ -28,7 +28,7 @@ class QueryBuilder
     public function insert(): QueryInsertBuilder
     {
         $insertQueryBuilder = new QueryInsertBuilder($this->dbConfigDto);
-        return $insertQueryBuilder;
+        return $insertQueryBuilder->insert();
     }
 
     public function update(string $table): QueryUpdateBuilder
@@ -40,6 +40,6 @@ class QueryBuilder
     public function delete(): QueryDeleteBuilder
     {
         $deleteQueryBuilder = new QueryDeleteBuilder($this->dbConfigDto);
-        return $deleteQueryBuilder;
+        return $deleteQueryBuilder->delete();
     }
 }
