@@ -6,7 +6,7 @@ namespace src\QueryBuilder\CommandsBuilders;
 
 use src\db\db;
 use src\db\DbConfigDto;
-use src\QueryBuilder\SqlCommands\FromCommand;
+use src\QueryBuilder\SqlCommands\SetTableCommand;
 use src\QueryBuilder\SqlCommands\GroupByCommand;
 use src\QueryBuilder\SqlCommands\HavingCommand;
 use src\QueryBuilder\SqlCommands\LimitCommand;
@@ -40,7 +40,7 @@ class CommandsQuerySelectBuilder extends BaseCommandsQueryBuilder
     public function from(string $from): self
     {
         $this->checkIsLastStatement(SqlStatements::SELECT);
-        $this->addCommand(new FromCommand($from));
+        $this->addCommand(new SetTableCommand(SqlStatements::FROM, $from));
         return $this;
     }
 

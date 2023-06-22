@@ -6,7 +6,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use src\db\DbConfigDto;
 use src\db\DbConnectionFactory;
-use src\QueryBuilder\CommandsBuilders\CommandsQuerySelectBuilder;
+use src\QueryBuilder\CommandsQueryBuilder;
 use src\QueryBuilder\SqlCommands\OrderByCommand;
 
 $configDto = new DbConfigDto();
@@ -15,12 +15,13 @@ $configDto->dbHost = '127.0.0.1';
 $configDto->dbName = 'todo';
 $configDto->user = 'root';
 
-$queryBuilder = new CommandsQuerySelectBuilder($configDto);
+$queryBuilder = new CommandsQueryBuilder($configDto);
+
+$queryBuilder->insert()->into('logger')->columns(['id', 'message'])->values([21, 'test'])->execute();
 
 $res = $queryBuilder->select('*')
     ->from('logger')
-    ->orderBy(['message' => OrderByCommand::SORT_ASC])
-    ->where(['message' => 'confirm error'])
+    ->where(['message' => 'test'])
     // ->groupBy('message')
     // ->having(['count', 'id', '>', 1])
     // ->orderBy(['id' => QuerySelectParams::SORT_DESC])
@@ -29,8 +30,12 @@ $res = $queryBuilder->select('*')
 var_dump($res);
 
 /**
+ * final all TODO-s in project
+ * 
  * TODO andWhere, orWhere
  * TODO all builders on commands
  * TODO base commands for typical commands
  * TODO ConditionCommand refactor
+ * TODO Insert as [key => val] array
+ * TODO special objects commands Insert and Delete
  */

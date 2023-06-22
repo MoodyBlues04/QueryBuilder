@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace src\QueryBuilder\SqlCommands;
 
-class FromCommand extends SqlCommand
+class SetTableCommand extends SqlCommand
 {
+    private string $statement;
     private string $query;
 
-    public function __construct(string $from)
+    public function __construct(string $statement, string $table)
     {
-        $this->query = $from;
+        $this->statement = $statement;
+        $this->query = $table;
     }
 
     public function getStatementName(): string
     {
-        return SqlStatements::FROM;
+        return $this->statement;
     }
 
     public function getSqlQuery(): string

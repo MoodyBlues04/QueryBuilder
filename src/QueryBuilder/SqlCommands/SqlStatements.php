@@ -12,7 +12,7 @@ class SqlStatements
     const WHERE    = 'WHERE';
     const HAVING   = 'HAVING';
     const SET      = 'SET';
-    const COLUMNS  = 'COLUMNS';
+    const COLUMNS  = '';
     const VALUES   = 'VALUES';
     const GROUP_BY = 'GROUP BY';
     const ORDER_BY = 'ORDER BY';
